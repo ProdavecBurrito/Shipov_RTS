@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class SelectedShaderPresenter : MonoBehaviour
 {
-    [SerializeField] private Shader _baseShader;
-    [SerializeField] private Material _objectMaterial;
     [SerializeField] private SelectableValue _selectedValue;
+
+    private OutlineSelector[] _outlineSelectors;
 
     private void Start()
     {
@@ -16,11 +16,29 @@ public class SelectedShaderPresenter : MonoBehaviour
     {
         if (selected != null)
         {
-            _objectMaterial.shader = selected.SelectedShader;
+            if (_outlineSelectors != null)
+            {
+                foreach (var item in _outlineSelectors)
+                {
+                    item.SetBaseShader();
+                }
+            }
+            _outlineSelectors = (selected as Component).GetComponentsInParent<OutlineSelector>();
+            foreach (var item in _outlineSelectors)
+            {
+                item.SetOutlineShader();
+            }
         }
         else
         {
-            _objectMaterial.shader = _baseShader;
+            if(_outlineSelectors != null)
+            {
+                foreach (var item in _outlineSelectors)
+                {
+                    item.SetBaseShader();
+                }
+            }
+             
         }
     }
 }
