@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class AttackCommand : CommandExecutorBase<IAttackCommand>
+public class AttackCommand : IAttackCommand
 {
-    public override void ExecuteSpecificCommand<IAttackCommand>(IAttackCommand command)
+    public Transform AttackTarget { get; }
+
+    public AttackCommand(Transform target)
     {
-        Debug.Log("Attack");
+        AttackTarget = target;
     }
 }

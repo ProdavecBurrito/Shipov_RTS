@@ -1,10 +1,12 @@
 
 using UnityEngine;
 
-public class HoldCommand : CommandExecutorBase<IHoldCommand>
+public class HoldCommand : IHoldCommand
 {
-    public override void ExecuteSpecificCommand<IHoldCommand>(IHoldCommand command)
+    public Vector3 HoldVector { get; }
+
+    public HoldCommand(Vector3 vector)
     {
-        Debug.Log("Hold");
+        HoldVector = vector;
     }
 }

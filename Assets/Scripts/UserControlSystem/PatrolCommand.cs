@@ -1,10 +1,12 @@
 
 using UnityEngine;
 
-public class PatrolCommand : CommandExecutorBase<IPatrolCommand>
+public class PatrolCommand : IPatrolCommand
 {
-    public override void ExecuteSpecificCommand<IPatrolCommand>(IPatrolCommand command)
-    {
-        Debug.Log("Patrol");
-    }
+    public Vector3 PatrolVector { get; }
+
+    public PatrolCommand(Vector3 patrolVector)
+	{
+        PatrolVector = patrolVector;
+	}
 }

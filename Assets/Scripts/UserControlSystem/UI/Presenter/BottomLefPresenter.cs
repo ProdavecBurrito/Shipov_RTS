@@ -14,7 +14,7 @@ public class BottomLefPresenter : MonoBehaviour
 
     private void Start()
     {
-        _selectedValue.OnSelected += OnSelected;
+        _selectedValue.OnNewValue += OnSelected;
         OnSelected(_selectedValue.CurrentValue);
     }
 
@@ -39,7 +39,7 @@ public class BottomLefPresenter : MonoBehaviour
 
     private void OnDestroy()
     {
-        _selectedValue.OnSelected -= OnSelected;
+        _selectedValue.OnNewValue -= OnSelected;
     }
 
 }
