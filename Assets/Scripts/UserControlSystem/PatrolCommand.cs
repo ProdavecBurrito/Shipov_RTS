@@ -1,12 +1,14 @@
-
 using UnityEngine;
 
 public class PatrolCommand : IPatrolCommand
 {
-    public Vector3 PatrolVector { get; }
+    public Vector3 From { get; }
 
-    public PatrolCommand(Vector3 patrolVector)
+    public Vector3 To { get; }
+
+    public PatrolCommand(Vector3 from, Vector3 to)
 	{
-        PatrolVector = patrolVector;
+        From = from;
+        To = to;
 	}
 }

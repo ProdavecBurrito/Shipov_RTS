@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AttackCommand : IAttackCommand
 {
-    public Transform AttackTarget { get; }
+    public IAttackable AttackTarget { get; }
 
-    public AttackCommand(Transform target)
+    public AttackCommand(IAttackable target)
     {
         AttackTarget = target;
     }

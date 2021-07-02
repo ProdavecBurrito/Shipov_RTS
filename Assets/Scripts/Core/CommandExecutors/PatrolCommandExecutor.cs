@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PatrolCommandExecutor : CommandExecutorBase<IPatrolCommand>
 {
-    public override void ExecuteSpecificCommand<IPatrolCommand>(IPatrolCommand command)
+    public override void ExecuteSpecificCommand(IPatrolCommand command)
     {
-        Debug.Log($"{name} is patrol to {command}");
+        Debug.Log($"{name} is patrol from {command.From}, to {command.To}");
     }
 }

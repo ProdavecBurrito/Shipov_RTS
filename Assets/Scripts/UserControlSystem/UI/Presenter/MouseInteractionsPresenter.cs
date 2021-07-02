@@ -9,14 +9,14 @@ public class MouseInteractionsPresenter : MonoBehaviour
     [SerializeField] private EventSystem _eventSystem;
 
     [SerializeField] private Vector3Value _groundClicksRMB;
-    [SerializeField] private TransformValue _attackTargetRMB;
+    [SerializeField] private AttackValue _attackTargetRMB;
     [SerializeField] private Transform _groundTransform;
 
     private Plane _groundPlane;
 
     private void Start()
     {
-        _groundPlane = new Plane(_groundTransform.up, 0);
+        _groundPlane = new Plane(_groundTransform.position, 0);
     }
 
 
@@ -31,35 +31,35 @@ public class MouseInteractionsPresenter : MonoBehaviour
             return;
         }
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
+        var hits = Physics.RaycastAll(ray);
         if (Input.GetMouseButtonUp(0))
         {
-            var hits = Physics.RaycastAll(ray);
-            if (hits.Length == 0)
+            if (IsHit<ISelectable>(hits, out var selectable))
             {
-                return;
+                _selectedObject.SetValue(selectable);
             }
-            var selectable = hits.Select(hit => hit.collider.GetComponentInParent<ISelectable>()).Where(c => c != null).FirstOrDefault();
-            _selectedObject.SetValue(selectable);
         }
-        else if (Input.GetMouseButtonDown(1))
+        else
         {
-            var hits = Physics.RaycastAll(ray);
-            if (hits.Length > 0)
+            if (IsHit<IAttackable>(hits, out var attackable))
             {
-                var target = hits.Select(hit => hit.collider.GetComponentInParent<Transform>()).Where(c => c != null).FirstOrDefault();
-                if (target is ISelectable)
-                {
-                    _attackTargetRMB.SetValue(target);
-                    return;
-                }
+                _attackTargetRMB.SetValue(attackable);
             }
-
-            if (_groundPlane.Raycast(ray, out var enter))
+            else if (_groundPlane.Raycast(ray, out var enter))
             {
                 _groundClicksRMB.SetValue(ray.origin + ray.direction * enter);
-                return;
             }
         }
     }
 
+    private bool IsHit<T>(RaycastHit[] hits, out T result) where T : class
+    {
+        result = default;
+        if (hits.Length == 0)
+        {
+            return false;
+        }
+        result = hits.Select(hit => hit.collider.GetComponentInParent<T>()).Where(c => c != null).FirstOrDefault();
+        return result != default;
+    }
 }

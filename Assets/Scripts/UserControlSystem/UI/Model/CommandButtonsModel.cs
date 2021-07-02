@@ -24,10 +24,7 @@ public class CommandButtonsModel
 		_commandIsPending = true;
 		OnCommandAccepted?.Invoke(commandExecutor);
 
-		_unitProducer.ProcessCommandExecutor(commandExecutor, command =>
-        {
-            ExecuteCommandWrapper(commandExecutor, command);
-        });
+		_unitProducer.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
 		_attacker.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
 		_stopper.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
 		_mover.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(commandExecutor, command));
