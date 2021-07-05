@@ -7,16 +7,23 @@ public class MoveCommandExecutor : CommandExecutorBase<IMoveCommand>
     [SerializeField] private Animator _animator;
     [SerializeField] private HoldCommandExecutor _holdCommand;
     [SerializeField] private NavMeshObstacle _navMeshObstacle;
+    [SerializeField] private NavMeshAgent _meshAgent;
 
     public override async void ExecuteSpecificCommand(IMoveCommand command)
     {
-        GetComponent<NavMeshAgent>().destination = command.Target;
+        _meshAgent.destination = command.Target;
         _animator.SetTrigger("Walk");
-        _navMeshObstacle.enabled = false;
         _holdCommand.CancellationToken = new System.Threading.CancellationTokenSource();
-        await _stop.WithCancellation(_holdCommand.CancellationToken.Token);
+        try
+        {
+            await _stop.WithCancellation(_holdCommand.CancellationToken.Token);
+        }
+        catch
+        {
+            _meshAgent.isStopped = true;
+            _meshAgent.ResetPath();
+        }
         _holdCommand.CancellationToken = null;
         _animator.SetTrigger("Idle");
-        _navMeshObstacle.enabled = true;
     }
 }

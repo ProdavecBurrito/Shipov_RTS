@@ -1,5 +1,7 @@
 using UnityEngine;
 using Zenject;
+using UniRx;
+using System;
 
 [CreateAssetMenu(fileName = "UntitledInstaller", menuName = "Installers/UntitledInstaller")]
 public class UntitledInstaller : ScriptableObjectInstaller<UntitledInstaller>
@@ -14,5 +16,6 @@ public class UntitledInstaller : ScriptableObjectInstaller<UntitledInstaller>
         Container.BindInstances(_legacyContext, _groudClickRMB, _attackTargetRMB, _selectableValue);
         Container.Bind<IAwaitable<IAttackable>>().FromInstance(_attackTargetRMB);
         Container.Bind<IAwaitable<Vector3>>().FromInstance(_groudClickRMB);
+        Container.Bind<IObservable<ISelectable>>().FromInstance(_selectableValue);
     }
 }

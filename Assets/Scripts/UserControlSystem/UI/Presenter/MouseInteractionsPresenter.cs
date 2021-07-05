@@ -1,6 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UniRx;
+using Zenject;
 
 public class MouseInteractionsPresenter : MonoBehaviour
 {
@@ -14,42 +16,42 @@ public class MouseInteractionsPresenter : MonoBehaviour
 
     private Plane _groundPlane;
 
-    private void Start()
+    [Inject]
+    private void InjectInput()
     {
-        _groundPlane = new Plane(_groundTransform.position, 0);
-    }
+        _groundPlane = new Plane(_groundTransform.up, 0);
 
+        var inputStream = Observable.EveryUpdate().Where(_ => _eventSystem.IsPointerOverGameObject());
 
-    private void Update()
-    {
-        if (!Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
+        var leftMouseButton = inputStream.Where(_ => Input.GetMouseButtonDown(0));
+        var rightMouseButton = inputStream.Where(_ => Input.GetMouseButtonDown(1));
+
+        var lmbHitRay = leftMouseButton.Select(_ => _camera.ScreenPointToRay(Input.mousePosition));
+        var rmbHitRay = rightMouseButton.Select(_ => _camera.ScreenPointToRay(Input.mousePosition));
+
+        var lmbReycast = lmbHitRay.Select(ray => Physics.RaycastAll(ray));
+        var rmbReycast = rmbHitRay.Select(ray => Physics.RaycastAll(ray));
+
+        lmbReycast.Subscribe(rayHit =>
         {
-            return;
-        }
-        if (_eventSystem.IsPointerOverGameObject())
-        {
-            return;
-        }
-        var ray = _camera.ScreenPointToRay(Input.mousePosition);
-        var hits = Physics.RaycastAll(ray);
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (IsHit<ISelectable>(hits, out var selectable))
+            if (IsHit<ISelectable>(rayHit, out var selectable))
             {
                 _selectedObject.SetValue(selectable);
             }
-        }
-        else
+        });
+
+        rmbReycast.Subscribe(rayHit =>
         {
-            if (IsHit<IAttackable>(hits, out var attackable))
+            if (IsHit<IAttackable>(rayHit, out var attackable))
             {
                 _attackTargetRMB.SetValue(attackable);
             }
-            else if (_groundPlane.Raycast(ray, out var enter))
-            {
-                _groundClicksRMB.SetValue(ray.origin + ray.direction * enter);
-            }
-        }
+
+            //if (_groundPlane.Raycast(rmbHitRay, out var place))
+            //{
+            //    _groundClicksRMB.SetValue(rmbHitRay.origin + rmbHitRay.direction, place);
+            //}
+        });
     }
 
     private bool IsHit<T>(RaycastHit[] hits, out T result) where T : class
