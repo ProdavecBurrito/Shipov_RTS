@@ -16,7 +16,7 @@ public class CommandButtonsView : MonoBehaviour
 
 	private Dictionary<Type, GameObject> _buttonsByExecutorType;
 
-	private void Start()
+	private void Awake()
 	{
 		_buttonsByExecutorType = new Dictionary<Type, GameObject>();
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IAttackCommand>), _attackButton);
@@ -26,16 +26,18 @@ public class CommandButtonsView : MonoBehaviour
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IProduceUnitCommand>), _produceUnitButton);
 	}
 
-	public void BlockInteractions(ICommandExecutor ce)
+	public void BlockInteractions(ICommandExecutor executor)
 	{
 		UnblockAllInteractions();
-		GetButtonGameObjectByType(ce.GetType())
-		.GetComponent<Selectable>().interactable = false;
+		GetButtonGameObjectByType(executor.GetType()).GetComponent<Selectable>().interactable = false;
 	}
 
-	public void UnblockAllInteractions() => SetInteractible(true);
+    public void UnblockAllInteractions()
+    {
+        SetInteractible(true);
+    }
 
-	private void SetInteractible(bool value)
+    private void SetInteractible(bool value)
 	{
 		_attackButton.GetComponent<Selectable>().interactable = value;
 		_moveButton.GetComponent<Selectable>().interactable = value;
@@ -46,12 +48,8 @@ public class CommandButtonsView : MonoBehaviour
 
 	private GameObject GetButtonGameObjectByType(Type executorInstanceType)
 	{
-		return _buttonsByExecutorType
-			.Where(type => type.Key.IsAssignableFrom(executorInstanceType))
-			.First()
-			.Value;
+		return _buttonsByExecutorType.Where(type => type.Key.IsAssignableFrom(executorInstanceType)).First().Value;
 	}
-
 
 	public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors)
 	{

@@ -6,7 +6,6 @@ using System;
 
 public class CommandButtonsPresenter : MonoBehaviour
 {
-    [SerializeField] private SelectableValue _selectable;
     [SerializeField] private CommandButtonsView _view;
 
     [Inject] private CommandButtonsModel _model;
@@ -33,7 +32,7 @@ public class CommandButtonsPresenter : MonoBehaviour
         {
             _model.OnSelectionChanged();
         }
-        _currentSelectable = (IObservable<ISelectable>)selectable;
+        _currentSelectable = selectable as IObservable<ISelectable>;
 
         _view.Clear();
         if (selectable != null)

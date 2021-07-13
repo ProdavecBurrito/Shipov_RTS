@@ -21,7 +21,7 @@ public class MouseInteractionsPresenter : MonoBehaviour
     {
         _groundPlane = new Plane(_groundTransform.up, 0);
 
-        var inputStream = Observable.EveryUpdate().Where(_ => _eventSystem.IsPointerOverGameObject());
+        var inputStream = Observable.EveryUpdate().Where(_ => !_eventSystem.IsPointerOverGameObject());
 
         var leftMouseButton = inputStream.Where(_ => Input.GetMouseButtonDown(0));
         var rightMouseButton = inputStream.Where(_ => Input.GetMouseButtonDown(1));

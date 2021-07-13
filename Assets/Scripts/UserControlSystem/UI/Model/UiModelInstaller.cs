@@ -10,7 +10,10 @@ public class UiModelInstaller : MonoInstaller
 		Container.Bind<CommandCreatorBase<IPatrolCommand>>().To<PatrolCommandCreator>().AsTransient();
 		Container.Bind<CommandCreatorBase<IHoldCommand>>().To<HoldCommandCreator>().AsTransient();
 
-		Container.Bind<CommandButtonsModel>().AsTransient();
+		Container.Bind<CommandButtonsModel>().AsSingle();
+
+		Container.Bind<float>().WithId("Chomper").FromInstance(3.0f);
+		Container.Bind<string>().WithId("Chomper").FromInstance("Chomper");
 	}
 
 }

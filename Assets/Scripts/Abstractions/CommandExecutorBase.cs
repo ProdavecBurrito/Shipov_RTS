@@ -8,5 +8,4 @@ public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor w
     {
         ExecuteSpecificCommand((T)command);
     }
-
 }
