@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
-public class HoldCommandCreator : CancellableCommandCreatorBase<IHoldCommand, Vector3>
+public class HoldCommandCreator : CommandCreatorBase<IHoldCommand>
 {
-    protected override IHoldCommand CreateCommand(Vector3 arg)
+    protected override void SpecificCommandCreation(Action<IHoldCommand> creationCallback)
     {
-        return new HoldCommand(arg);
+        
     }
 }

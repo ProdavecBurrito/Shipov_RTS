@@ -13,5 +13,6 @@ public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
         var produceUnitCommand = _context.Inject(new ProduceUnitCommand());
         _diContainer.Inject(produceUnitCommand);
         creationCallback?.Invoke(produceUnitCommand);
+
     }
 }

@@ -8,7 +8,11 @@ public class OutlineSelector : MonoBehaviour
 
 	public void SetOutlineShader()
 	{
-        foreach (var item in _renderers)
+		if (this == null)
+		{
+			return;
+		}
+		foreach (var item in _renderers)
         {
 			item.material.shader = _selectedShader;
         }

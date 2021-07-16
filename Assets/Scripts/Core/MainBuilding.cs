@@ -17,7 +17,21 @@ public class MainBuilding : MonoBehaviour, ISelectable, IAttackable
 	public Transform PivotPoint => _buildingTransform;
 	public Vector3 DeparturePoint => _departurePoint;
 
-	public void SetDeparturePoint(Vector3 point)
+    public void RecieveDamage(int amount)
+    {
+        if (_health <= 0)
+        {
+            return;
+        }
+        _health -= amount;
+        if (_health <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
+    public void SetDeparturePoint(Vector3 point)
     {
 		_departurePoint = point;
     }

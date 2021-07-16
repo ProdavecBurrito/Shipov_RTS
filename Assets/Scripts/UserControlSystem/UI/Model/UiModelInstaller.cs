@@ -9,6 +9,7 @@ public class UiModelInstaller : MonoInstaller
 		Container.Bind<CommandCreatorBase<IMoveCommand>>().To<MoveCommandCreator>().AsTransient();
 		Container.Bind<CommandCreatorBase<IPatrolCommand>>().To<PatrolCommandCreator>().AsTransient();
 		Container.Bind<CommandCreatorBase<IHoldCommand>>().To<HoldCommandCreator>().AsTransient();
+		Container.Bind<CommandCreatorBase<IDeparturePoint>>().To<DepartureCommandCreator>().AsTransient();
 
 		Container.Bind<CommandButtonsModel>().AsSingle();
 

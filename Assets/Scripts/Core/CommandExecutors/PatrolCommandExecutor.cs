@@ -1,9 +1,42 @@
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PatrolCommandExecutor : CommandExecutorBase<IPatrolCommand>
 {
-    public override void ExecuteSpecificCommand(IPatrolCommand command)
+    [SerializeField] private UnitMovementStop _stop;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private HoldCommandExecutor _stopCommandExecutor;
+
+    private Vector3 From;
+    private Vector3 To;
+
+    public override async Task ExecuteSpecificCommand(IPatrolCommand command)
     {
-        Debug.Log($"{name} is patrol from {command.From}, to {command.To}");
+        From = command.From;
+        To = command.To;
+        while (true)
+        {
+            GetComponent<NavMeshAgent>().destination = To;
+            _animator.SetTrigger("Walk");
+            _stopCommandExecutor.CancellationToken = new CancellationTokenSource();
+            try
+            {
+                await _stop.WithCancellation(_stopCommandExecutor.CancellationToken.Token);
+            }
+            catch
+            {
+                GetComponent<NavMeshAgent>().isStopped = true;
+                GetComponent<NavMeshAgent>().ResetPath();
+                break;
+            }
+
+            var temp = From;
+            From = To;
+            To = temp;
+        }
+        _stopCommandExecutor.CancellationToken = null;
+        _animator.SetTrigger("Idle");
     }
 }
