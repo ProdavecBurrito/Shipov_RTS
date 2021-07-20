@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MainUnit : MonoBehaviour, ISelectable, IAttackable
+public class MainUnit : MonoBehaviour, ISelectable, IAttackable, IAutomaticAttacker, IRMBMovable
 {
     [SerializeField] Transform _unitTransform;
     [SerializeField] private Sprite _icon;
@@ -9,6 +9,8 @@ public class MainUnit : MonoBehaviour, ISelectable, IAttackable
     [SerializeField] private Animator _animator;
     [SerializeField] private HoldCommandExecutor _stopCommand;
     [SerializeField] private int _damage = 25;
+    [SerializeField] private float _visionRadius = 8f;
+    [SerializeField] private MoveCommandExecutor _moveCommand;
 
     private float _health = 50;
 
@@ -21,6 +23,9 @@ public class MainUnit : MonoBehaviour, ISelectable, IAttackable
     public int Damage => _damage;
 
     public Transform PivotPoint => _unitTransform;
+
+    public float VisionRadius => _visionRadius;
+
 
     public void RecieveDamage(int amount)
     {
@@ -40,5 +45,10 @@ public class MainUnit : MonoBehaviour, ISelectable, IAttackable
     {
         _stopCommand.ExecuteSpecificCommand(new HoldCommand());
         Destroy(gameObject);
+    }
+
+    public void MoveTo(Vector3 vector3)
+    {
+        _moveCommand.ExecuteSpecificCommand(new MoveCommand(vector3));
     }
 }

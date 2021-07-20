@@ -1725,7 +1725,6 @@ GameObject:
   - component: {fileID: 853807894}
   - component: {fileID: 716656320}
   - component: {fileID: 716656328}
-  - component: {fileID: 7487136442745300147}
   - component: {fileID: 3617199776748189154}
   m_Layer: 0
   m_Name: Chomper
@@ -1814,6 +1813,10 @@ MonoBehaviour:
   _unitTransform: {fileID: 7368531222946092960}
   _icon: {fileID: 21300000, guid: 37def1c45593caf47a161a5c052c45ad, type: 3}
   _maxHealth: 50
+  _animator: {fileID: 7368531222953556034}
+  _stopCommand: {fileID: 853807893}
+  _damage: 25
+  _visionRadius: 8
 --- !u!114 &853807891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1826,6 +1829,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f758be0b345ef648b5ad87929183f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stop: {fileID: 716656320}
+  _animator: {fileID: 7368531222953556034}
+  _stopCommandExecutor: {fileID: 853807893}
 --- !u!114 &853807892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1841,7 +1847,7 @@ MonoBehaviour:
   _stop: {fileID: 716656320}
   _animator: {fileID: 7368531222953556034}
   _holdCommand: {fileID: 853807893}
-  _navMeshObstacle: {fileID: 7487136442745300147}
+  _navMeshObstacle: {fileID: 0}
   _meshAgent: {fileID: 716656328}
 --- !u!114 &853807893
 MonoBehaviour:
@@ -1867,6 +1873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7865a7bb594911947a9c8426f63a0ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 7368531222953556034}
+  _stopCommandExecutor: {fileID: 853807893}
 --- !u!114 &716656320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1902,22 +1910,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!208 &7487136442745300147
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7368531222946122624}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.5, y: 1, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!114 &3617199776748189154
 MonoBehaviour:
   m_ObjectHideFlags: 0

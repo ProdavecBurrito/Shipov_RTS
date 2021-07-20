@@ -1,5 +1,4 @@
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +11,7 @@ public class PatrolCommandExecutor : CommandExecutorBase<IPatrolCommand>
     private Vector3 From;
     private Vector3 To;
 
-    public override async Task ExecuteSpecificCommand(IPatrolCommand command)
+    public override async void ExecuteSpecificCommand(IPatrolCommand command)
     {
         From = command.From;
         To = command.To;

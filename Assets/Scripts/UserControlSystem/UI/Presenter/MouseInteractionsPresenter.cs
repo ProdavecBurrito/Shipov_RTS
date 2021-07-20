@@ -14,6 +14,7 @@ public class MouseInteractionsPresenter : MonoBehaviour
     [SerializeField] private AttackValue _attackTargetRMB;
     [SerializeField] private Transform _groundTransform;
 
+    private IRMBMovable _rMBMovable;
     private Plane _groundPlane;
 
     [Inject]
@@ -30,7 +31,8 @@ public class MouseInteractionsPresenter : MonoBehaviour
         var rmbHitRay = rightMouseButton.Select(_ => _camera.ScreenPointToRay(Input.mousePosition));
 
         var lmbReycast = lmbHitRay.Select(ray => Physics.RaycastAll(ray));
-        var rmbReycast = rmbHitRay.Select(ray => Physics.RaycastAll(ray));
+        var rmbReycast = rmbHitRay.Select(ray => (ray, Physics.RaycastAll(ray)));
+
 
         lmbReycast.Subscribe(rayHit =>
         {
@@ -38,20 +40,33 @@ public class MouseInteractionsPresenter : MonoBehaviour
             {
                 _selectedObject.SetValue(selectable);
             }
+            if (IsHit<IRMBMovable>(rayHit, out var sel))
+            {
+                Debug.Log("1");
+                _rMBMovable = sel;
+            }
         });
 
-        rmbReycast.Subscribe(rayHit =>
+        rmbReycast.Subscribe(data =>
         {
-            if (IsHit<IAttackable>(rayHit, out var attackable))
+            var (ray, hits) = data;
+
+            if (IsHit<IAttackable>(hits, out var attackable))
             {
                 _attackTargetRMB.SetValue(attackable);
             }
-
-            //if (_groundPlane.Raycast(rmbHitRay, out var place))
-            //{
-            //    _groundClicksRMB.SetValue(rmbHitRay.origin + rmbHitRay.direction, place);
-            //}
+            else if (_groundPlane.Raycast(ray, out var enter))
+            {
+                _groundClicksRMB.SetValue(ray.origin + ray.direction * enter);
+                if (_rMBMovable != null)
+                {
+                    Debug.Log("2");
+                    _rMBMovable.MoveTo(_groundClicksRMB.CurrentValue);
+                }
+            }
         });
+
+
     }
 
     private bool IsHit<T>(RaycastHit[] hits, out T result) where T : class

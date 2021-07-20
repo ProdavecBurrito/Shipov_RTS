@@ -1020,6 +1020,7 @@ MonoBehaviour:
   - {fileID: 2011911261}
   - {fileID: 1905493404}
   - {fileID: 1905493405}
+  - {fileID: 930119758}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -1177,6 +1178,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: fd7e1f66388801742b0428f9455766b8, type: 3}
   m_PrefabInstance: {fileID: 187514958}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &202157694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 853807892, guid: 099624c3e764ba34cabb388e328d82dd, type: 3}
+  m_PrefabInstance: {fileID: 853807889}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c74b6607e0954b4b902e002e184e4a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &246757322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4870,6 +4882,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 930119757}
     m_Modifications:
+    - target: {fileID: 853807892, guid: 099624c3e764ba34cabb388e328d82dd, type: 3}
+      propertyPath: _navMeshObstacle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1169434838, guid: 099624c3e764ba34cabb388e328d82dd, type: 3}
+      propertyPath: _moveCommand
+      value: 
+      objectReference: {fileID: 202157694}
     - target: {fileID: 7368531222946092960, guid: 099624c3e764ba34cabb388e328d82dd, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -5236,6 +5256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 930119757}
+  - component: {fileID: 930119758}
   m_Layer: 0
   m_Name: Units
   m_TagString: Untagged
@@ -5258,6 +5279,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &930119758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930119756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6811aea431abd4d40a00d6d879aee9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -7720,12 +7753,12 @@ MonoBehaviour:
   - {fileID: 1052462575}
   - {fileID: 338470542}
   _imageHolders:
+  - {fileID: 246757322}
   - {fileID: 574997396}
   - {fileID: 1570304430}
   - {fileID: 517028296}
   - {fileID: 1052462572}
   - {fileID: 338470539}
-  - {fileID: 246757322}
   _buttons:
   - {fileID: 246757324}
   - {fileID: 574997398}

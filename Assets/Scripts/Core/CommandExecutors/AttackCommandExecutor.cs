@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
@@ -31,25 +30,19 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
     {
         _targetPositions
             .Select(value => new Vector3((float)Math.Round(value.x, 2), (float)Math.Round(value.y, 2), (float)Math.Round(value.z, 2)))
-            .Distinct()
-            .ObserveOnMainThread()
-            .Subscribe(startMovingToPosition);
+            .Distinct().ObserveOnMainThread().Subscribe(StartMovingToPosition);
 
-        _attackTargets
-            .ObserveOnMainThread()
-            .Subscribe(startAttackingTargets);
+        _attackTargets.ObserveOnMainThread().Subscribe(StartAttackingTargets);
 
-        _targetRotations
-            .ObserveOnMainThread()
-            .Subscribe(setAttackRoation);
+        _targetRotations.ObserveOnMainThread().Subscribe(SetAttackRoation);
     }
 
-    private void setAttackRoation(Quaternion targetRotation)
+    private void SetAttackRoation(Quaternion targetRotation)
     {
         transform.rotation = targetRotation;
     }
 
-    private void startAttackingTargets(IAttackable target)
+    private void StartAttackingTargets(IAttackable target)
     {
         GetComponent<NavMeshAgent>().isStopped = true;
         GetComponent<NavMeshAgent>().ResetPath();
@@ -57,13 +50,13 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
         target.RecieveDamage(GetComponent<IDamageDealer>().Damage);
     }
 
-    private void startMovingToPosition(Vector3 position)
+    private void StartMovingToPosition(Vector3 position)
     {
         GetComponent<NavMeshAgent>().destination = position;
         _animator.SetTrigger("Walk");
     }
 
-    public override async Task ExecuteSpecificCommand(IAttackCommand command)
+    public override async void ExecuteSpecificCommand(IAttackCommand command)
     {
         _targetTransform = (command.AttackTarget as Component).transform;
         _currentAttackOp = new AttackOperation(this, command.AttackTarget);
@@ -110,13 +103,13 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
             public AttackOperationAwaiter(AttackOperation attackOperation)
             {
                 _attackOperation = attackOperation;
-                attackOperation.OnComplete += onComplete;
+                attackOperation.OnComplete += OnComplete;
             }
 
-            private void onComplete()
+            private void OnComplete()
             {
-                _attackOperation.OnComplete -= onComplete;
-                onWaitFinish(new AsyncExtensions.Void());
+                _attackOperation.OnComplete -= OnComplete;
+                //onWaitFinish(new AsyncExtensions.Void());
             }
         }
 
@@ -132,7 +125,7 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
             _target = target;
             _attackCommandExecutor = attackCommandExecutor;
 
-            var thread = new Thread(attackAlgorythm);
+            var thread = new Thread(AttackAlgorythm);
             thread.Start();
         }
 
@@ -142,7 +135,7 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
             OnComplete?.Invoke();
         }
 
-        private void attackAlgorythm(object obj)
+        private void AttackAlgorythm(object obj)
         {
             while (true)
             {

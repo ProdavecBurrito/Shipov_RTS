@@ -7,7 +7,6 @@ public class MoveCommandExecutor : CommandExecutorBase<IMoveCommand>, ICommandTa
     [SerializeField] private UnitMovementStop _stop;
     [SerializeField] private Animator _animator;
     [SerializeField] private HoldCommandExecutor _holdCommand;
-    [SerializeField] private NavMeshObstacle _navMeshObstacle;
     [SerializeField] private NavMeshAgent _meshAgent;
 
     public ReactiveCollection<IMoveCommand> _moveCommands = new ReactiveCollection<IMoveCommand>();

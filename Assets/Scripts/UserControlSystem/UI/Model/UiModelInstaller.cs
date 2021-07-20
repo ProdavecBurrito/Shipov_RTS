@@ -12,6 +12,7 @@ public class UiModelInstaller : MonoInstaller
 		Container.Bind<CommandCreatorBase<IDeparturePoint>>().To<DepartureCommandCreator>().AsTransient();
 
 		Container.Bind<CommandButtonsModel>().AsSingle();
+		Container.Bind<BottomCenterModel>().AsSingle();
 
 		Container.Bind<float>().WithId("Chomper").FromInstance(3.0f);
 		Container.Bind<string>().WithId("Chomper").FromInstance("Chomper");
